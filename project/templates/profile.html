@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <div class="card" style="border-radius: 15px; overflow: hidden; background: #0e227c">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-128x128" style="border-radius: 50%; overflow: hidden;">
+                                        <!-- Profil Fotoğrafı -->
+                                        <img src="https://via.placeholder.com/128" alt="Profile Photo">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <h1 class="title is-4">Profil Bilgileriniz</h1>
+                                </div>
+                            </div>
+                            <div class="content" style="background: #f8f9fa">
+                                <div class="box" style="border-radius: 10px; background: rgba(239, 233, 233, 0.5)">
+                                    <p><strong>Adı:</strong> {{ current_user.name }}</p>
+                                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                                    <p><strong>Telefon Numarası:</strong> {{ current_user.contact_number }}</p>
+                                    <p><strong>Bakiyeniz:</strong> {{ current_user.bakiye }}</p>
+                                    <p><strong>Ortak Bakiyeniz:</strong> {{ current_user.bakiye_ortak }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

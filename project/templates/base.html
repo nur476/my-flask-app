@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flask Auth Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hata mesajı varsa göster
+            var error = '{{ get_flashed_messages(with_categories=False) | join(" ") }}';
+            if (error) {
+                // Bootstrap bildirim bileşenini kullanarak mesaj göster
+                var notification = document.createElement('div');
+                notification.className = 'alert alert-danger';
+                notification.innerText = error;
+                document.body.prepend(notification);
+    
+                // Mesajı belirli bir süre sonra kaldır
+                setTimeout(function() {
+                    notification.remove();
+                }, 5000); // 5 saniye sonra mesajı kaldır
+            }
+        });
+    </script>
+    <style>
+    #bus-search-features {
+    padding: 2rem 0;
+    background-color: #f9f9f9;
+    margin-top: 3rem; /* Footer ile arayı açmak için gerekirse ayarlayın */
+}
+
+#features {
+    padding: 2rem;
+}
+
+.h-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.h-list .box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    flex: 1 1 20%; /* Her kutunun genişliğini %30 olarak ayarlayın */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.);
+    text-align: center;
+    margin: 0.5rem;
+    transition: background-color 0.3s;
+    max-width: calc(33% - 1rem); /* Sayfanın üçte biri kadar */
+}
+
+.h-list .box:hover {
+    background-color: #f0f0f0;
+}
+
+.h-list .box i {
+    font-size: 1.5rem; /* Sembol boyutunu küçültün */
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
+
+.h-list .box h3 {
+    font-size: 1.125rem; /* Başlık boyutunu küçültün */
+    margin-bottom: 0.5rem;
+}
+
+.h-list .box p {
+    font-size: 0.75rem; /* Metin boyutunu küçültün */
+    color: #555;
+}
+
+
+        .hero.is-info {
+            background: linear-gradient(rgb(59, 73, 223), rgb(37, 46, 139)); /* Koyu Mavi */
+        }
+
+        .navbar {
+            background-color: #004085; /* Çok koyu mavi */
+            color: #ffffff; /* Beyaz metin */
+            border-bottom: 2px solid #003366; /* Daha koyu mavi alt sınır */
+        }
+
+        .navbar-item {
+            color: #ffffff; /* Beyaz metin */
+            transition: background-color 0.3s, color 0.3s; /* Yumuşak geçişler */
+            font-weight: bold; /* Kalın metin */
+        }
+
+        .navbar-item:hover {
+            background-color: #003366; /* Daha koyu mavi arka plan */
+            color: #ffffff; /* Beyaz metin */
+        }
+
+        .navbar-link {
+            font-weight: 600; /* Orta kalınlıkta metin */
+            font-size: 1.1rem; /* Biraz büyük font */
+        }
+
+        .navbar-item.has-dropdown:hover .navbar-dropdown {
+            display: block; /* Açılır menü gösterme */
+        }
+
+        .navbar-dropdown {
+            background-color: #003366; /* Açılır menü arka planı */
+            border-radius: 0 0 5px 5px; /* Yuvarlatılmış köşeler */
+        }
+
+        .navbar-dropdown .navbar-item {
+            font-weight: normal; /* Normal kalınlıkta metin */
+            padding: 10px; /* İç boşluk */
+        }
+
+        .navbar-dropdown .navbar-item:hover {
+            background-color: #002244; /* Çok koyu mavi arka plan */
+        }
+
+        .button {
+            border-radius: 25px; /* Yuvarlatılmış köşeler */
+            font-weight: bold; /* Kalın metin */
+            padding: 10px 20px; /* İç boşluk */
+        }
+
+        .button.is-primary {
+            background-color: #0056b3; /* Öne çıkan mavi */
+            border-color: #0056b3; /* Sınır rengi */
+        }
+
+        .button.is-primary:hover {
+            background-color: #004494; /* Koyu mavi hover */
+            border-color: #004494; /* Sınır rengi hover */
+        }
+
+        .button.is-light {
+            background-color: #f8f9fa; /* Hafif gri */
+            border-color: #e0e0e0; /* Sınır rengi */
+        }
+
+        .button.is-light:hover {
+            background-color: #e0e0e0; /* Koyu gri hover */
+            border-color: #d0d0d0; /* Sınır rengi hover */
+        }
+
+        .hero-body {
+            padding: 3rem 0; /* Üst ve alt boşluk */
+            text-align: center; /* Ortaya hizalama */
+        }
+
+        .hero-body h1 {
+            color: #ffffff; /* Beyaz metin */
+            font-size: 3rem; /* Büyük font boyutu */
+            font-weight: bold; /* Kalın metin */
+            margin-bottom: 1rem; /* Alt boşluk */
+        }
+
+        footer {
+            padding: 1rem;
+            text-align: center;
+            background-color: #004085; /* Koyu mavi arka plan */
+            color: #ffffff; /* Beyaz metin */
+            border-top: 2px solid #003366; /* Koyu mavi üst sınır */
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero is-info is-fullheight">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a href="{{ url_for('main.index') }}" class="navbar-item">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </div>
+                        <div class="navbar-end">
+                            {% if current_user.is_authenticated %}
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">
+                                        <i class="fas fa-user"></i> {{ current_user.name }}
+                                    </a>
+                                    <div class="navbar-dropdown">
+                                        <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                                            <i class="fas fa-user-circle"></i> Profile
+                                        </a>
+                                        <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="navbar-item">
+                                    <a href="{{ url_for('auth.login') }}" class="button is-primary">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </a>
+                                </div>
+                                <div class="navbar-item">
+                                    <a href="{{ url_for('auth.signup') }}" class="button is-light">
+                                        <i class="fas fa-user-plus"></i> Sign Up
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="hero-body">
+            <div class="container">
+                {% block content %}
+                <h1 class="title">
+                    Hoşgeldiniz!
+                </h1>
+                {% endblock %}
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2024 AİRCHİP</p>
+    </footer>
+    
+</body>
+
+</html>
